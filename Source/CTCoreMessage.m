@@ -90,9 +90,7 @@
         mailmessage_flush(myMessage);
         mailmessage_free(myMessage);
     }
-    if (myFields != NULL) {
-        mailimf_single_fields_free(myFields);
-    }
+    [self _releaseMailimfSingleFields: myFields];
     self.lastError = nil;
     self.parentFolder = nil;
     [myParsedMIME release];
@@ -101,6 +99,13 @@
 
 - (NSError *)lastError {
     return lastError;
+}
+
+- (BOOL)hasBodyStructure {
+    if (myParsedMIME == nil) {
+        return NO;
+    }
+    return YES;
 }
 
 - (BOOL)fetchBodyStructure {
@@ -116,21 +121,25 @@
         self.lastError = MailCoreCreateErrorFromIMAPCode(err);
         return NO;
     }
+    
+    CTMIME *oldMIME = myParsedMIME;
     myParsedMIME = [[CTMIMEFactory createMIMEWithMIMEStruct:[self messageStruct]->msg_mime
                         forMessage:[self messageStruct]] retain];
+    [oldMIME release];
 
     return YES;
 }
 
 - (void)setBodyStructure:(struct mailmime *)mime {
+    CTMIME *oldMIME = myParsedMIME;
     myMessage->msg_mime = mime;
     myParsedMIME = [[CTMIMEFactory createMIMEWithMIMEStruct:[self messageStruct]->msg_mime
                                                  forMessage:[self messageStruct]] retain];
+    [oldMIME release];
 }
 
 - (void)setFields:(struct mailimf_fields *)fields {
-    if (myFields != NULL)
-        mailimf_single_fields_free(myFields);
+    [self _releaseMailimfSingleFields: myFields];
     myFields = mailimf_single_fields_new(fields);
 }
 
@@ -350,6 +359,7 @@
             return nil;
 
         NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        calendar.timeZone = [self senderTimeZone];
         NSDateComponents *comps = [[NSDateComponents alloc] init];
 
         [comps setYear:d->dt_year];
@@ -359,31 +369,13 @@
         [comps setMinute:d->dt_min];
         [comps setSecond:d->dt_sec];
 
-        NSDate *messageDateNoTimezone = [calendar dateFromComponents:comps];
+        NSDate *messageDate = [calendar dateFromComponents:comps];
 
         [comps release];
         [calendar release];
 
-        // no timezone applied
-        return messageDateNoTimezone;
+        return messageDate;
     }
-}
-
-- (NSDate *)sentDateGMT {
-    struct mailimf_date_time *d;
-
-    if((d = [self libetpanDateTime]) == NULL)
-        return nil;
-
-    NSInteger timezoneOffsetInSeconds = 3600*d->dt_zone/100;
-
-    NSDate *date = [self senderDate];
-
-    return [date dateByAddingTimeInterval:timezoneOffsetInSeconds * -1];
-}
-
-- (NSDate*)sentDateLocalTimeZone {
-    return [[self sentDateGMT] dateByAddingTimeInterval:[[NSTimeZone localTimeZone] secondsFromGMT]];
 }
 
 - (BOOL)isUnread {
@@ -665,6 +657,19 @@
     return [nsresult autorelease];
 }
 
+- (NSString *)rfc822Header {
+    char *result = NULL;
+    NSString *nsresult;
+    int r = mailimap_fetch_rfc822_header([self imapSession], [self sequenceNumber], &result);
+    if (r == MAIL_NO_ERROR) {
+        nsresult = [[NSString alloc] initWithCString:result encoding:NSUTF8StringEncoding];
+    } else {
+        self.lastError = MailCoreCreateErrorFromIMAPCode(r);
+        return nil;
+    }
+    mailimap_msg_att_rfc822_free(result);
+    return [nsresult autorelease];
+}
 
 - (struct mailmessage *)messageStruct {
     return myMessage;
@@ -808,6 +813,32 @@
 	}
 
 	return str_list;
+}
+
+- (void)_releaseMailimfSingleFields:(struct mailimf_single_fields *)fields {
+    
+    /**
+     The LibEtPan API states:
+     mailimf_single_fields_free() frees memory used by the structure and
+     substructures will NOT be released. They should be released by the application.
+     */
+
+    if (fields) {
+        if (fields->fld_bcc) mailimf_bcc_free(fields->fld_bcc);
+        if (fields->fld_cc) mailimf_cc_free(fields->fld_cc);
+        if (fields->fld_comments) mailimf_comments_free(fields->fld_comments);
+        if (fields->fld_from) mailimf_from_free(fields->fld_from);
+        if (fields->fld_in_reply_to) mailimf_in_reply_to_free(fields->fld_in_reply_to);
+        if (fields->fld_keywords) mailimf_keywords_free(fields->fld_keywords);
+        if (fields->fld_message_id) mailimf_message_id_free(fields->fld_message_id);
+        if (fields->fld_orig_date) mailimf_orig_date_free(fields->fld_orig_date);
+        if (fields->fld_references) mailimf_references_free(fields->fld_references);
+        if (fields->fld_reply_to) mailimf_reply_to_free(fields->fld_reply_to);
+        if (fields->fld_sender) mailimf_sender_free(fields->fld_sender);
+        if (fields->fld_subject) mailimf_subject_free(fields->fld_subject);
+        if (fields->fld_to) mailimf_to_free(fields->fld_to);
+        mailimf_single_fields_free(fields);
+    }
 }
 
 @end
