@@ -1,0 +1,275 @@
+From ee8e6be420bd7ecd45c0c1ec1267d23a79b386bd Mon Sep 17 00:00:00 2001
+From: Dionysios Kalofonos <peitemou@gmail.com>
+Date: Tue, 26 Nov 2013 11:23:39 +0200
+Subject: [PATCH] Updates the XCode settings.
+
+---
+ .../Cyrus SASL.xcodeproj/project.pbxproj           | 43 ++++++++++++---------
+ .../openssl/openssl.xcodeproj/project.pbxproj      | 45 ++++++++++++----------
+ 2 files changed, 48 insertions(+), 40 deletions(-)
+
+diff --git a/ports/security/cyrus-sasl/Cyrus SASL.xcodeproj/project.pbxproj b/ports/security/cyrus-sasl/Cyrus SASL.xcodeproj/project.pbxproj
+index 1b5e45b..d576235 100644
+--- a/ports/security/cyrus-sasl/Cyrus SASL.xcodeproj/project.pbxproj	
++++ b/ports/security/cyrus-sasl/Cyrus SASL.xcodeproj/project.pbxproj	
+@@ -1984,7 +1984,7 @@
+ 		0867D690FE84028FC02AAC07 /* Project object */ = {
+ 			isa = PBXProject;
+ 			attributes = {
+-				LastUpgradeCheck = 0430;
++				LastUpgradeCheck = 0500;
+ 				ORGANIZATIONNAME = "Bindle Binaries";
+ 			};
+ 			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "Cyrus SASL" */;
+@@ -2099,7 +2099,6 @@
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+ 				ALWAYS_SEARCH_USER_PATHS = NO;
+-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+ 				COPY_PHASE_STRIP = NO;
+ 				DSTROOT = /tmp/sasl2.dst;
+ 				GCC_DYNAMIC_NO_PIC = NO;
+@@ -2119,7 +2118,6 @@
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+ 				ALWAYS_SEARCH_USER_PATHS = NO;
+-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+ 				DSTROOT = /tmp/sasl2.dst;
+ 				GCC_MODEL_TUNING = G5;
+ 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+@@ -2135,15 +2133,21 @@
+ 		1DEB922308733DC00010E9CD /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				ARCHS = (
+-					armv6,
+-					armv7,
+-				);
++				CLANG_WARN_BOOL_CONVERSION = YES;
++				CLANG_WARN_CONSTANT_CONVERSION = YES;
++				CLANG_WARN_EMPTY_BODY = YES;
++				CLANG_WARN_ENUM_CONVERSION = YES;
++				CLANG_WARN_INT_CONVERSION = YES;
++				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+ 				GCC_C_LANGUAGE_STANDARD = c99;
+ 				GCC_OPTIMIZATION_LEVEL = 0;
+ 				GCC_THUMB_SUPPORT = NO;
+ 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
++				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+ 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
++				GCC_WARN_UNDECLARED_SELECTOR = YES;
++				GCC_WARN_UNINITIALIZED_AUTOS = YES;
++				GCC_WARN_UNUSED_FUNCTION = YES;
+ 				GCC_WARN_UNUSED_VARIABLE = YES;
+ 				HEADER_SEARCH_PATHS = (
+ 					"cyrus-sasl/sasldb",
+@@ -2152,22 +2156,30 @@
+ 					"cyrus-sasl",
+ 					../../../include,
+ 				);
++				ONLY_ACTIVE_ARCH = YES;
+ 				OTHER_LDFLAGS = "-ObjC";
+ 				SDKROOT = iphoneos;
++				SKIP_INSTALL = YES;
+ 			};
+ 			name = Debug;
+ 		};
+ 		1DEB922408733DC00010E9CD /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				ARCHS = (
+-					armv6,
+-					armv7,
+-				);
++				CLANG_WARN_BOOL_CONVERSION = YES;
++				CLANG_WARN_CONSTANT_CONVERSION = YES;
++				CLANG_WARN_EMPTY_BODY = YES;
++				CLANG_WARN_ENUM_CONVERSION = YES;
++				CLANG_WARN_INT_CONVERSION = YES;
++				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+ 				GCC_C_LANGUAGE_STANDARD = c99;
+ 				GCC_THUMB_SUPPORT = NO;
+ 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
++				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+ 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
++				GCC_WARN_UNDECLARED_SELECTOR = YES;
++				GCC_WARN_UNINITIALIZED_AUTOS = YES;
++				GCC_WARN_UNUSED_FUNCTION = YES;
+ 				GCC_WARN_UNUSED_VARIABLE = YES;
+ 				HEADER_SEARCH_PATHS = (
+ 					"cyrus-sasl/sasldb",
+@@ -2178,16 +2190,13 @@
+ 				);
+ 				OTHER_LDFLAGS = "-ObjC";
+ 				SDKROOT = iphoneos;
++				SKIP_INSTALL = YES;
+ 			};
+ 			name = Release;
+ 		};
+ 		A0FB53DB126E52C60057FEE9 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				ARCHS = (
+-					armv7s,
+-					armv7,
+-				);
+ 				COPY_PHASE_STRIP = NO;
+ 				GCC_DYNAMIC_NO_PIC = NO;
+ 				GCC_OPTIMIZATION_LEVEL = 0;
+@@ -2199,10 +2208,6 @@
+ 		A0FB53DC126E52C60057FEE9 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				ARCHS = (
+-					armv7s,
+-					armv7,
+-				);
+ 				COPY_PHASE_STRIP = YES;
+ 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+ 				GCC_THUMB_SUPPORT = NO;
+diff --git a/ports/security/openssl/openssl.xcodeproj/project.pbxproj b/ports/security/openssl/openssl.xcodeproj/project.pbxproj
+index 28d0a94..d452853 100644
+--- a/ports/security/openssl/openssl.xcodeproj/project.pbxproj
++++ b/ports/security/openssl/openssl.xcodeproj/project.pbxproj
+@@ -6240,7 +6240,7 @@
+ 		0867D690FE84028FC02AAC07 /* Project object */ = {
+ 			isa = PBXProject;
+ 			attributes = {
+-				LastUpgradeCheck = 0430;
++				LastUpgradeCheck = 0500;
+ 			};
+ 			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "openssl" */;
+ 			compatibilityVersion = "Xcode 3.2";
+@@ -6896,7 +6896,6 @@
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+ 				ALWAYS_SEARCH_USER_PATHS = NO;
+-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+ 				COPY_PHASE_STRIP = NO;
+ 				DSTROOT = /tmp/openssl.dst;
+ 				GCC_DYNAMIC_NO_PIC = NO;
+@@ -6915,7 +6914,6 @@
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+ 				ALWAYS_SEARCH_USER_PATHS = NO;
+-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+ 				DSTROOT = /tmp/openssl.dst;
+ 				GCC_MODEL_TUNING = G5;
+ 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+@@ -6930,22 +6928,29 @@
+ 		1DEB922308733DC00010E9CD /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				ARCHS = (
+-					armv6,
+-					armv7,
+-				);
+ 				"ARCHS[sdk=iphonesimulator*]" = i386;
++				CLANG_WARN_BOOL_CONVERSION = YES;
++				CLANG_WARN_CONSTANT_CONVERSION = YES;
++				CLANG_WARN_EMPTY_BODY = YES;
++				CLANG_WARN_ENUM_CONVERSION = YES;
++				CLANG_WARN_INT_CONVERSION = YES;
++				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+ 				GCC_C_LANGUAGE_STANDARD = c99;
+ 				GCC_OPTIMIZATION_LEVEL = 0;
+ 				GCC_THUMB_SUPPORT = NO;
+ 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
++				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+ 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
++				GCC_WARN_UNDECLARED_SELECTOR = YES;
++				GCC_WARN_UNINITIALIZED_AUTOS = YES;
++				GCC_WARN_UNUSED_FUNCTION = YES;
+ 				GCC_WARN_UNUSED_VARIABLE = YES;
+ 				HEADER_SEARCH_PATHS = (
+ 					openssl,
+ 					openssl/include,
+ 					openssl/crypto,
+ 				);
++				ONLY_ACTIVE_ARCH = YES;
+ 				OTHER_CFLAGS = (
+ 					"-DOPENSSL_NO_GMP",
+ 					"-DOPENSSL_NO_JPAKE",
+@@ -6957,6 +6962,7 @@
+ 				);
+ 				OTHER_LDFLAGS = "-ObjC";
+ 				SDKROOT = iphoneos;
++				SKIP_INSTALL = YES;
+ 				VALID_ARCHS = "i386 armv6 armv7";
+ 			};
+ 			name = Debug;
+@@ -6964,15 +6970,21 @@
+ 		1DEB922408733DC00010E9CD /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				ARCHS = (
+-					armv6,
+-					armv7,
+-				);
+ 				"ARCHS[sdk=iphonesimulator*]" = i386;
++				CLANG_WARN_BOOL_CONVERSION = YES;
++				CLANG_WARN_CONSTANT_CONVERSION = YES;
++				CLANG_WARN_EMPTY_BODY = YES;
++				CLANG_WARN_ENUM_CONVERSION = YES;
++				CLANG_WARN_INT_CONVERSION = YES;
++				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+ 				GCC_C_LANGUAGE_STANDARD = c99;
+ 				GCC_THUMB_SUPPORT = NO;
+ 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
++				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+ 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
++				GCC_WARN_UNDECLARED_SELECTOR = YES;
++				GCC_WARN_UNINITIALIZED_AUTOS = YES;
++				GCC_WARN_UNUSED_FUNCTION = YES;
+ 				GCC_WARN_UNUSED_VARIABLE = YES;
+ 				HEADER_SEARCH_PATHS = (
+ 					openssl,
+@@ -6990,6 +7002,7 @@
+ 				);
+ 				OTHER_LDFLAGS = "-ObjC";
+ 				SDKROOT = iphoneos;
++				SKIP_INSTALL = YES;
+ 				VALID_ARCHS = "i386 armv6 armv7";
+ 			};
+ 			name = Release;
+@@ -6998,7 +7011,6 @@
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+ 				ALWAYS_SEARCH_USER_PATHS = NO;
+-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+ 				COPY_PHASE_STRIP = NO;
+ 				DSTROOT = /tmp/openssl.dst;
+ 				GCC_DYNAMIC_NO_PIC = NO;
+@@ -7017,7 +7029,6 @@
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+ 				ALWAYS_SEARCH_USER_PATHS = NO;
+-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+ 				DSTROOT = /tmp/openssl.dst;
+ 				GCC_MODEL_TUNING = G5;
+ 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+@@ -7032,10 +7043,6 @@
+ 		A0511DEE127788ED00DE46C4 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				ARCHS = (
+-					armv7,
+-					armv7s,
+-				);
+ 				COPY_PHASE_STRIP = NO;
+ 				GCC_DYNAMIC_NO_PIC = NO;
+ 				GCC_OPTIMIZATION_LEVEL = 0;
+@@ -7047,10 +7054,6 @@
+ 		A0511DEF127788ED00DE46C4 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				ARCHS = (
+-					armv7,
+-					armv7s,
+-				);
+ 				COPY_PHASE_STRIP = YES;
+ 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+ 				GCC_THUMB_SUPPORT = NO;
+-- 
+1.8.3.4 (Apple Git-47)
+

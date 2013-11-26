@@ -1,0 +1,19 @@
+Patches are generated through the steps:
+1) Make some changes, stage them for commit, create a new branch and commit.
+   git checkout -b XCodeSettings  # new branch
+   git add <files>
+   git commit
+2) Generate the patch corresponding to the new branch. Name the patch as
+   <subrepo>-<branch>.patch
+   git format-patch master --stdout > iOSPorts-XCodeSettings.patch
+
+Apply a patch
+1) Move to the corresponding subrepo.
+2) Have a look at the changes
+   git apply --stat iOSPorts-XCodeSettings.patch
+3) Test the patch
+   git apply --check iOSPorts-XCodeSettings.patch
+4) Apply the patch
+   git am --signoff < iOSPorts-XCodeSettings.patch
+
+#eof
