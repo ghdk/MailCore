@@ -1,6 +1,6 @@
-From 03377bfc5cfd2b5c835944e127a34b97bd490695 Mon Sep 17 00:00:00 2001
+From 9d4a373ff38b77eef2d483f2f8a6b211b1153fcc Mon Sep 17 00:00:00 2001
 From: Dionysios Kalofonos <peitemou@gmail.com>
-Date: Mon, 17 Mar 2014 09:47:32 +0200
+Date: Mon, 17 Mar 2014 10:14:23 +0200
 Subject: [PATCH] Sets GCC_TREAT_WARNINGS_AS_ERRORS = NO.
 
 ---
