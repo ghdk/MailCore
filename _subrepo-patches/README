@@ -6,8 +6,9 @@ Patches are generated through the steps:
 2) Generate the patch corresponding to the new branch. Name the patch as
    <subrepo>-<branch>.patch
    git format-patch master --stdout > iOSPorts-XCodeSettings.patch
-3) switch to master, and delete the branch
+3) switch to master
    git checkout master
+3) When the new branch is not needed,  delete the branch
    git branch -d XCodeSettings
 4) add and commit the new patch file
 
