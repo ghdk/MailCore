@@ -1,21 +1,14 @@
-From b648c0c43bee5f24f6504988861ae30cc5ae7b21 Mon Sep 17 00:00:00 2001
+From 6bc7acbedee1e23d8cdbe110ad31c514e23e7131 Mon Sep 17 00:00:00 2001
 From: Dionysios Kalofonos <peitemou@gmail.com>
-Date: Sat, 1 Dec 2012 17:46:37 +0200
-Subject: [PATCH] When a CTCoreMessage is initialized with a method that
- involves the mailmessage structure, the myFields references the
- mailimf_single_fields of the mailmessage. Upon deallocation, the function
- mailmessage_free() also releases the substructures of the
- mailimf_single_fields, hence the object is released properly. However, when
- the object is initialised with init, the mailmessage is not used, and the
- substructures of mailimf_single_fields are leaked. This patch fixes this
- issue.
+Date: Mon, 17 Mar 2014 13:33:59 +0200
+Subject: [PATCH] Fixes some memory leaks.
 
 ---
  Source/CTCoreMessage.m | 29 ++++++++++++++++++++++++-----
  1 file changed, 24 insertions(+), 5 deletions(-)
 
 diff --git a/Source/CTCoreMessage.m b/Source/CTCoreMessage.m
-index 7e3bbe5..8fa44b5 100644
+index bdd2cc8..8d25c75 100644
 --- a/Source/CTCoreMessage.m
 +++ b/Source/CTCoreMessage.m
 @@ -89,10 +89,11 @@
@@ -43,9 +36,9 @@ index 7e3bbe5..8fa44b5 100644
      myFields = mailimf_single_fields_new(fields);
  }
  
-@@ -818,4 +818,23 @@
- 	return str_list;
+@@ -867,4 +867,23 @@
  }
+ 
  
 +- (void)_releaseMailimfSingleFields:(struct mailimf_single_fields *)fields {
 +    if (fields) {
