@@ -1,0 +1,72 @@
+From b648c0c43bee5f24f6504988861ae30cc5ae7b21 Mon Sep 17 00:00:00 2001
+From: Dionysios Kalofonos <peitemou@gmail.com>
+Date: Sat, 1 Dec 2012 17:46:37 +0200
+Subject: [PATCH] When a CTCoreMessage is initialized with a method that
+ involves the mailmessage structure, the myFields references the
+ mailimf_single_fields of the mailmessage. Upon deallocation, the function
+ mailmessage_free() also releases the substructures of the
+ mailimf_single_fields, hence the object is released properly. However, when
+ the object is initialised with init, the mailmessage is not used, and the
+ substructures of mailimf_single_fields are leaked. This patch fixes this
+ issue.
+
+---
+ Source/CTCoreMessage.m | 29 ++++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
+
+diff --git a/Source/CTCoreMessage.m b/Source/CTCoreMessage.m
+index 7e3bbe5..8fa44b5 100644
+--- a/Source/CTCoreMessage.m
++++ b/Source/CTCoreMessage.m
+@@ -89,10 +89,11 @@
+     if (myMessage != NULL) {
+         mailmessage_flush(myMessage);
+         mailmessage_free(myMessage);
++        if (myFields)
++            mailimf_single_fields_free(myFields);
+     }
+-    if (myFields != NULL) {
+-        mailimf_single_fields_free(myFields);
+-    }
++    else
++        [self _releaseMailimfSingleFields: myFields];
+     self.lastError = nil;
+     self.parentFolder = nil;
+     [myParsedMIME release];
+@@ -141,8 +142,7 @@
+ }
+ 
+ - (void)setFields:(struct mailimf_fields *)fields {
+-    if (myFields != NULL)
+-        mailimf_single_fields_free(myFields);
++    [self _releaseMailimfSingleFields: myFields];
+     myFields = mailimf_single_fields_new(fields);
+ }
+ 
+@@ -818,4 +818,23 @@
+ 	return str_list;
+ }
+ 
++- (void)_releaseMailimfSingleFields:(struct mailimf_single_fields *)fields {
++    if (fields) {
++        if (fields->fld_bcc) mailimf_bcc_free(fields->fld_bcc);
++        if (fields->fld_cc) mailimf_cc_free(fields->fld_cc);
++        if (fields->fld_comments) mailimf_comments_free(fields->fld_comments);
++        if (fields->fld_from) mailimf_from_free(fields->fld_from);
++        if (fields->fld_in_reply_to) mailimf_in_reply_to_free(fields->fld_in_reply_to);
++        if (fields->fld_keywords) mailimf_keywords_free(fields->fld_keywords);
++        if (fields->fld_message_id) mailimf_message_id_free(fields->fld_message_id);
++        if (fields->fld_orig_date) mailimf_orig_date_free(fields->fld_orig_date);
++        if (fields->fld_references) mailimf_references_free(fields->fld_references);
++        if (fields->fld_reply_to) mailimf_reply_to_free(fields->fld_reply_to);
++        if (fields->fld_sender) mailimf_sender_free(fields->fld_sender);
++        if (fields->fld_subject) mailimf_subject_free(fields->fld_subject);
++        if (fields->fld_to) mailimf_to_free(fields->fld_to);
++        mailimf_single_fields_free(fields);
++    }
++}
++
+ @end
+-- 
+1.8.5.2 (Apple Git-48)
+
