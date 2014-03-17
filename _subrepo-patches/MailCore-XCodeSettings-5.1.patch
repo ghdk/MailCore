@@ -1,0 +1,32 @@
+From 03377bfc5cfd2b5c835944e127a34b97bd490695 Mon Sep 17 00:00:00 2001
+From: Dionysios Kalofonos <peitemou@gmail.com>
+Date: Mon, 17 Mar 2014 09:47:32 +0200
+Subject: [PATCH] Sets GCC_TREAT_WARNINGS_AS_ERRORS = NO.
+
+---
+ MailCore.xcodeproj/project.pbxproj | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/MailCore.xcodeproj/project.pbxproj b/MailCore.xcodeproj/project.pbxproj
+index deb1578..5a306c4 100644
+--- a/MailCore.xcodeproj/project.pbxproj
++++ b/MailCore.xcodeproj/project.pbxproj
+@@ -1075,6 +1075,7 @@
+ 				COPY_PHASE_STRIP = NO;
+ 				GCC_DYNAMIC_NO_PIC = NO;
+ 				GCC_OPTIMIZATION_LEVEL = 0;
++				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+ 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+ 				ONLY_ACTIVE_ARCH = NO;
+ 				PRIVATE_HEADERS_FOLDER_PATH = ../../include/MailCore/Private;
+@@ -1092,6 +1093,7 @@
+ 				CODE_SIGN_IDENTITY = "iPhone Developer";
+ 				COPY_PHASE_STRIP = YES;
+ 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
++				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+ 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+ 				ONLY_ACTIVE_ARCH = NO;
+ 				PRIVATE_HEADERS_FOLDER_PATH = ../../include/MailCore/Private;
+-- 
+1.8.5.2 (Apple Git-48)
+
