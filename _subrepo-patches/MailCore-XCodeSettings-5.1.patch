@@ -1,32 +1,32 @@
-From 9d4a373ff38b77eef2d483f2f8a6b211b1153fcc Mon Sep 17 00:00:00 2001
+From 859e04cfc838badfb802c9f5fc1b86ba08727c6b Mon Sep 17 00:00:00 2001
 From: Dionysios Kalofonos <peitemou@gmail.com>
-Date: Mon, 17 Mar 2014 10:14:23 +0200
-Subject: [PATCH] Sets GCC_TREAT_WARNINGS_AS_ERRORS = NO.
+Date: Mon, 17 Mar 2014 11:25:06 +0200
+Subject: [PATCH] Removes the setting GCC_TREAT_WARNINGS_AS_ERRORS = YES.
 
 ---
- MailCore.xcodeproj/project.pbxproj | 2 ++
- 1 file changed, 2 insertions(+)
+ MailCore.xcodeproj/project.pbxproj | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/MailCore.xcodeproj/project.pbxproj b/MailCore.xcodeproj/project.pbxproj
-index deb1578..5a306c4 100644
+index deb1578..682533e 100644
 --- a/MailCore.xcodeproj/project.pbxproj
 +++ b/MailCore.xcodeproj/project.pbxproj
-@@ -1075,6 +1075,7 @@
- 				COPY_PHASE_STRIP = NO;
- 				GCC_DYNAMIC_NO_PIC = NO;
- 				GCC_OPTIMIZATION_LEVEL = 0;
-+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
- 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
- 				ONLY_ACTIVE_ARCH = NO;
- 				PRIVATE_HEADERS_FOLDER_PATH = ../../include/MailCore/Private;
-@@ -1092,6 +1093,7 @@
- 				CODE_SIGN_IDENTITY = "iPhone Developer";
- 				COPY_PHASE_STRIP = YES;
+@@ -1037,7 +1037,6 @@
  				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
- 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
- 				ONLY_ACTIVE_ARCH = NO;
- 				PRIVATE_HEADERS_FOLDER_PATH = ../../include/MailCore/Private;
+ 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+ 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+ 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+ 				GCC_WARN_UNUSED_VARIABLE = YES;
+ 				HEADER_SEARCH_PATHS = "libetpan/build-mac/include/**";
+@@ -1056,7 +1055,6 @@
+ 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+ 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+ 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+ 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+ 				GCC_WARN_UNUSED_VARIABLE = YES;
+ 				HEADER_SEARCH_PATHS = "libetpan/build-mac/include/**";
 -- 
 1.8.5.2 (Apple Git-48)
 
